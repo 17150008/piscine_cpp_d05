@@ -1,35 +1,32 @@
+#include <iostream>
+#include "Character.hh"
 #include "Warrior.hh"
 
-Warrior::Warrior(std::string const& name, int lvl) : Character(name, lvl, 12, 12, 6, 5, 7), _weapon("hammer")
+Warrior::Warrior(std::string const& name, int level) : Character(name, level, "Warrior", "Dwarf"), _weapon("hammer")
 {
-  std::cout << "I'm " << name << " KKKKKKKKKKRRRRRRRRRRRRRREEEEEEEEOOOOOOORRRRGGGGGGG" << std::endl;
+    _stats[STAT_STRENGTH] = 12;
+    _stats[STAT_STAMINA] = 12;
+    _stats[STAT_INTEL] = 6;
+    _stats[STAT_SPIRIT] = 5;
+    _stats[STAT_AGILITY] = 7;
+
+    std::cout << "I'm " << getName() << " KKKKKKKKKKRRRRRRRRRRRRRREEEEEEEEOOOOOOORRRRGGGGGGG" << std::endl;
 }
 
-Warrior::~Warrior()
+int Warrior::CloseAttack()
 {
+    if (_power < 30)
+        return HandleOutOfPower();
+    _power -= 30;
+    std::cout << getName() << " strikes with his " << _weapon << std::endl;
+    return 20 + _stats[STAT_STRENGTH];
 }
 
-int             Warrior::CloseAttack()
+int Warrior::RangeAttack()
 {
-  if (_power < 30)
-    {
-      std::cout << _name << " out of power" << std::endl;
-      return 0;
-    }
-  _power -= 30;
-  std::cout << _name << " strikes with his " << _weapon << std::endl;
-  return 20 + _strength;
-}
-
-int             Warrior::RangeAttack()
-{
-  if (_power < 10)
-    {
-      std::cout << _name << " out of power" << std::endl;
-      return 0;
-    }
-  _power -= 10;
-  std::cout << _name << " intercepts" << std::endl;
-  Range = CLOSE;
-  return 0;
-}
+    if (_power < 10)
+        return HandleOutOfPower();
+    _power -= 10;
+    Range = CLOSE;
+    std::cout << getName() << " intercepts" << std::endl;
+    return 0;}

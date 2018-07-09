@@ -1,47 +1,39 @@
+#include <iostream>
 #include "Mage.hh"
 
-Mage::Mage(std::string const& name, int lvl) : Character(name, lvl, 6, 6, 12, 11, 7)
+Mage::Mage(std::string const& name, int level) : Character(name, level, "Mage", "Gnome")
 {
-  std::cout << name << " teleported" << std::endl;
-}
-Mage::Mage(std::string const& name, int lvl, int strength, int stamina, int intelligence, int spirit, int agility) : Character(name, lvl, strength, stamina, intelligence, spirit, agility)
-{
-  std::cout << _name << " teleported" << std::endl;
-}
-
-Mage::~Mage()
-{
+    _stats[STAT_STRENGTH] = 6;
+    _stats[STAT_STAMINA] = 6;
+    _stats[STAT_INTEL] = 12;
+    _stats[STAT_SPIRIT] = 11;
+    _stats[STAT_AGILITY] = 7;
+    std::cout << getName() << " teleported" << std::endl;
 }
 
-int             Mage::CloseAttack()
+int Mage::CloseAttack()
 {
-  if (_power < 10)
-    {
-      std::cout << _name << " out of power" << std::endl;
-      return 0;
-    }
-  _power -= 10;
-  std::cout << _name << " blinks" << std::endl;
-  Range = RANGE;
-  return 0;
+    if (_power < 10)
+        return HandleOutOfPower();
+    std::cout << getName() << " blinks" << std::endl;
+    Range = RANGE;
+    _power -= 10;
+    return 0;
 }
 
-int             Mage::RangeAttack()
+int Mage::RangeAttack()
 {
-  if (_power < 25)
-    {
-      std::cout << _name << " out of power" << std::endl;
-      return 0;
-    }
-  _power -= 25;
-  std::cout << _name << " launches a fire ball" << std::endl;
-  return 20 + _spirit;
+    if (_power < 25)
+        return HandleOutOfPower();
+    std::cout << getName() << " launches a fire ball" << std::endl;
+    _power -= 25;
+    return 20 + _stats[STAT_SPIRIT];
 }
 
-void		Mage::RestorePower()
+void Mage::RestorePower()
 {
-  _power += 50 + _intelligence;
-  if (_power > 100)
-    _power = 100;
-  std::cout << _name << " takes a mana potion" << std::endl;
+    _power += (50 + _stats[STAT_INTEL]);
+    if (_power > 100)
+        _power = 100;
+    std::cout << getName() << " takes a mana potion" << std::endl;
 }

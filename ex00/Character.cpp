@@ -1,79 +1,82 @@
+#include <iostream>
 #include "Character.hh"
 
-Character::Character(std::string const& name, int lvl) : Range(CLOSE), _name(name), _lvl(lvl), _pv(100), _power(100), _strength(5), _stamina(5), _intelligence(5), _spirit(5), _agility(5)
+Character::Character(std::string const& name, int level) :
+    Range(CLOSE), _name(name),
+    _level(level), _pv(100), _power(100),
+    _class("Character"), _race("Koala")
 {
-  std::cout << _name << " Created" << std::endl;
+    for (int i = 0; i < STAT_MAX; ++i)
+        _stats[i] = 5;
+    std::cout << getName() << " Created" << std::endl;
 }
 
-Character::~Character()
+std::string const& Character::getName() const
 {
+    return _name;
 }
 
-std::string const&	Character::getName() const
+int Character::getLvl() const
 {
-  return this->_name;
+    return _level;
 }
 
-int		Character::getLvl() const
+int Character::getPv() const
 {
-  return this->_lvl;
+    return _pv;
 }
 
-int		Character::getPv() const
+int Character::getPower() const
 {
-  return this->_pv;
+    return _power;
 }
 
-int		Character::getPower() const
+int Character::CloseAttack()
 {
-  return this->_power;
+    if (_power < 10)
+        return HandleOutOfPower();
+    std::cout << getName() << " strikes with a wood stick" << std::endl;
+    _power -= 10;
+    return 10 + _stats[STAT_STRENGTH];
 }
 
-int		Character::CloseAttack()
+int Character::RangeAttack()
 {
-  if (_power < 10)
+    if (_power < 10)
+        return HandleOutOfPower();
+    std::cout << getName() << " launches a stone" << std::endl;
+    _power -= 10;
+    return 5 + _stats[STAT_STRENGTH];
+}
+
+void Character::Heal()
+{
+   _pv += 50;
+   if (_pv > 100)
+       _pv = 100;
+   std::cout << getName() << " takes a potion" << std::endl;
+}
+
+void Character::RestorePower()
+{
+    _power = 100;
+    std::cout << getName() << " eats" << std::endl;
+}
+    
+int Character::HandleOutOfPower()
+{
+    std::cout << getName() << " out of power" << std::endl;
+    return 0;
+}
+    
+void Character::TakeDamage(int damage)
+{
+    if (_pv <= damage)
     {
-       std::cout << _name << " out of power" << std::endl;
-       return 0;
+        _pv = 0;
+        std::cout << getName() << " out of combat" << std::endl;
+        return;
     }
-  _power -= 10;
-  std::cout << _name << " strikes with a wood stick" << std::endl;
-  return 10 + _strength;
-}
-
-int		Character::RangeAttack()
-{
-  if (_power < 10)
-    {
-       std::cout << _name << " out of power" << std::endl;
-       return 0;
-    }
-  _power -= 10;
-  std::cout << _name << " launches a stone" << std::endl;
-  return 5 + _strength;
-}
-
-void		Character::Heal()
-{
-  _pv += 50;
-  if (_pv > 100)
-    _pv = 100;
-  std::cout << _name << " takes a potion" << std::endl;  
-}
-
-void		Character::RestorePower()
-{
-  _power = 100;
-  std::cout << _name << " eats" << std::endl;
-}
-
-void		Character::TakeDamage(int dmg)
-{
-  if ((_pv -= dmg) > 0)
-      std::cout << _name << " takes " << dmg << " damage" << std::endl;
-  else
-    {
-      std::cout << _name << " out of combat" << std::endl;
-      _pv = 0;
-    }
+    _pv -= damage;
+    std::cout << getName() << " takes " << damage << " damage" << std::endl;
 }

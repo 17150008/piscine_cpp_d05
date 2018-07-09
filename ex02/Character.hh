@@ -1,43 +1,53 @@
-#ifndef CHARACTER_HH
-#define CHARACTER_HH
+#ifndef CHARACTER_H_
+#define CHARACTER_H_
 
-#include <iostream>
+#include <string>
 
-class	Character
+
+class Character
 {
-
 public:
-  Character(std::string const& name, int lvl);
-  ~Character();
+    explicit Character(std::string const& name, int level, std::string const& cls = "Character", std::string const& race = "Koala");
+    virtual ~Character() {}
 
-  std::string const& getName() const;
-  int	getLvl() const;
-  int	getPv() const;
-  int	getPower() const;
-  int		CloseAttack();
-  int		RangeAttack();
-  void		Heal();
-  void		RestorePower();
-  void		TakeDamage(int dmg);
-  enum	AttackRange
+    enum Stats
     {
-      CLOSE,
-      RANGE
+        STAT_STRENGTH   = 0,
+        STAT_STAMINA    = 1,
+        STAT_INTEL      = 2,
+        STAT_SPIRIT     = 3,
+        STAT_AGILITY    = 4,
+        STAT_MAX        = 5
     };
-  AttackRange	Range;
 
+    enum AttackRange
+    {
+        CLOSE           = 0,
+        RANGE           = 1
+    };
+
+    std::string const& getName() const;
+    int getLvl() const;
+    int getPv() const;
+    int getPower() const;
+
+    virtual int CloseAttack();
+    virtual int RangeAttack();
+    virtual void Heal();
+    virtual void RestorePower();
+
+    void TakeDamage(int damage);
+
+    AttackRange Range;
 protected:
-  
-  Character(std::string const& name, int lvl, int strength, int stamina, int intelligence, int spirit, int agility);
-  std::string	_name;
-  int		_lvl;
-  int		_pv;
-  int		_power;
-  int		_strength;
-  int		_stamina;
-  int		_intelligence;
-  int		_spirit;
-  int		_agility;  
+    int _stats[STAT_MAX];
+    int HandleOutOfPower();
+    std::string const _name;
+    int _level;
+    int _pv;
+    int _power;
+    std::string _class;
+    std::string _race;
 };
 
 #endif

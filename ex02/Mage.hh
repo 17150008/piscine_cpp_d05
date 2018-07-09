@@ -1,23 +1,16 @@
-#ifndef MAGE_HH
-#define MAGE_HH
+#ifndef MAGE_H_
+#define MAGE_H_
 
 #include "Character.hh"
 
-class	Mage : public Character
+class Mage : public Character
 {
-
 public:
-  Mage(std::string const& name, int lvl);
-  ~Mage();
+    Mage(std::string const& name, int level);
 
-  int           CloseAttack();
-  int           RangeAttack();
-  void          RestorePower();
-
-protected:
-  
-  Mage(std::string const& name, int lvl, int strength, int stamina, int intelligence, int spirit, int agility);
-  
+    int CloseAttack();
+    int RangeAttack();
+    void RestorePower();
 };
 
 #endif

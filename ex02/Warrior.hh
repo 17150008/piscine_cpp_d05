@@ -1,21 +1,19 @@
-#ifndef WARRIOR_HH
-#define WARRIOR_HH
+#ifndef WARRIOR_H_
+#define WARRIOR_H_
 
+#include <string>
 #include "Character.hh"
 
-class	Warrior : public Character
+class Warrior : public Character
 {
-
 public:
-  Warrior(std::string const& name, int lvl);
-  ~Warrior();
+    explicit Warrior(std::string const& name, int level);
+    virtual ~Warrior() {}
 
-  int           CloseAttack();
-  int           RangeAttack();
-  
+    int CloseAttack();
+    int RangeAttack();
 private:
-
-  std::string const	_weapon;
+    std::string const _weapon;
 };
 
 #endif
